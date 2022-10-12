@@ -1,4 +1,4 @@
-package fr.florian;
+package fr.florian.chess;
 
 import javafx.scene.paint.Color;
 
