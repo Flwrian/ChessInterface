@@ -12,6 +12,8 @@ public class VueCase extends Button {
     private Color couleur;
     private VuePiece vuePiece;
 
+    private static VuePiece selectedPiece;
+
     public VueCase(int x, int y, Color couleur, VuePiece vuePiece) {
         this.x = x;
         this.y = y;
@@ -25,7 +27,8 @@ public class VueCase extends Button {
                 (int) (couleur.getBlue() * 255));
 
         // Set the style of the button
-        setStyle("-fx-background-color: " + color + "; -fx-border-color: black; -fx-border-width: 1px;");
+        setStyle("-fx-background-color: " + color + ";");
+        //  -fx-border-color: black; -fx-border-width: 1px;
 
         if (vuePiece != null){
             setGraphic(vuePiece);
@@ -34,9 +37,16 @@ public class VueCase extends Button {
         setMaxHeight(50);
         setMaxWidth(50);
 
-        setOnMouseClicked(event -> 
-            System.out.println("Pièce cliquée: {\n   Type: " + ((VueCase) event.getSource()).getVuePiece().getPiece().toString() + "\n   Couleur: " + ((VueCase) event.getSource()).getVuePiece().getPiece().getCouleurString() + "\n   Position: " + (char) (x + 97) + "" + (y + 1)+"\n}"));
+        // setOnMouseClicked(event -> System.out.println("Pièce cliquée: {\n   Type: " + ((VueCase) event.getSource()).getVuePiece().getPiece().toString() + "\n   Couleur: " + ((VueCase) event.getSource()).getVuePiece().getPiece().getCouleurString() + "\n   Position: " + (char) (x + 97) + "" + (y + 1)+"\n}"));
 
+        setOnMouseClicked(event -> {
+
+            selectedPiece = ((VueCase) event.getSource()).getVuePiece();
+            
+            if(selectedPiece != null){
+                System.out.println("Pièce sélectionnée: {\n   Type: " + selectedPiece.getPiece().toString() + "\n   Couleur: " + selectedPiece.getPiece().getCouleurString() + "\n   Position: " + (char) (x + 97) + "" + Math.abs(y - 8)+"\n}");
+            }
+        });
         
     }
 

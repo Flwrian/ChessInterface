@@ -24,7 +24,7 @@ public class VuePlateau extends GridPane {
         }
 
         // Show the grid
-        setGridLinesVisible(true);
+        // setGridLinesVisible(true);
 
         // Set the size of the grid
         setPrefSize(800, 800);
