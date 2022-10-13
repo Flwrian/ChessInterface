@@ -1,6 +1,8 @@
 package fr.florian.vues;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class VueCase extends Button {
@@ -30,6 +32,9 @@ public class VueCase extends Button {
         }
 
         setPrefSize(100, 100);
+
+        // on action: sout the position of the button
+        setOnAction(event -> System.out.println(x + ", " + y));
     }
 
     public int getX() {
@@ -48,9 +53,17 @@ public class VueCase extends Button {
         return couleur;
     }
 
+    public VuePiece getVuePiece() {
+        return vuePiece;
+    }
+
     public void setVuePiece(VuePiece vuePiece) {
         this.vuePiece = vuePiece;
-        getChildren().add(vuePiece);
+        if (vuePiece != null){
+            setGraphic(vuePiece);
+        } else {
+            setGraphic(new ImageView(new Image("EMPTY_SQUARE.png")));
+        }
     }
 
 }
