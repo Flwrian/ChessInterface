@@ -31,10 +31,11 @@ public class VueCase extends Button {
             setGraphic(vuePiece);
         }
 
-        setPrefSize(100, 100);
+        setMaxHeight(50);
+        setMaxWidth(50);
 
-        // on action: sout the position of the button
-        setOnAction(event -> System.out.println(x + ", " + y));
+        // on action: sout the position of the button in letter: Example, A6
+        setOnAction(event -> System.out.println((char) (x + 65) + "" + (y - 8)));
     }
 
     public int getX() {
@@ -57,12 +58,38 @@ public class VueCase extends Button {
         return vuePiece;
     }
 
+    /**
+     * Set the vuePiece on the Case
+     * @param vuePiece
+     */
     public void setVuePiece(VuePiece vuePiece) {
         this.vuePiece = vuePiece;
         if (vuePiece != null){
             setGraphic(vuePiece);
         } else {
             setGraphic(new ImageView(new Image("EMPTY_SQUARE.png")));
+        }
+    }
+
+    /**
+     * Set the vuePiece and set the maximum size of the image
+     * @param vuePiece
+     * @param x
+     * @param y
+     */
+    public void setVuePiece(VuePiece vuePiece, double x, double y) {
+        this.vuePiece = vuePiece;
+        if (vuePiece != null){
+            setGraphic(vuePiece);
+            vuePiece.setFitHeight(x);
+            vuePiece.setFitWidth(y);
+            getVuePiece().setFitHeight(x);
+            getVuePiece().setFitWidth(y);
+        } else {
+            ImageView img = new ImageView(new Image("EMPTY_SQUARE.png"));
+            img.setFitHeight(x);
+            img.setFitWidth(y);
+            setGraphic(img);
         }
     }
 
