@@ -34,8 +34,10 @@ public class VueCase extends Button {
         setMaxHeight(50);
         setMaxWidth(50);
 
-        // on action: sout the position of the button in letter: Example, A6
-        setOnAction(event -> System.out.println((char) (x + 65) + "" + (y - 8)));
+        setOnMouseClicked(event -> 
+            System.out.println("Pièce cliquée: {\n   Type: " + ((VueCase) event.getSource()).getVuePiece().getPiece().toString() + "\n   Couleur: " + ((VueCase) event.getSource()).getVuePiece().getPiece().getCouleurString() + "\n   Position: " + (char) (x + 97) + "" + (y + 1)+"\n}"));
+
+        
     }
 
     public int getX() {
