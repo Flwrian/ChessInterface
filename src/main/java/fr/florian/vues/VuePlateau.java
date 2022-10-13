@@ -42,43 +42,46 @@ public class VuePlateau extends GridPane {
     }
 
     public void loadFromFen(String fen) {
+
+        int imageX = (int) getPrefWidth()/9;
+        int imageY = (int) getPrefHeight()/9;
+
         // Fill the grid with the pieces from the FEN. Example: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR.
 
-        // Split the FEN into 8 rows
-        String[] rows = fen.split("/");
+        int x = 0;
+        int y = 0;
 
-        // For each row
-        for (int i = 0; i < rows.length; i++) {
-            // Split the row into 8 squares
-            String[] squares = rows[i].split("");
+        // While there is a character in the FEN, add a vueCase of the corresponding piece
+        for (int i = 0; i < fen.length(); i++) {
+            char c = fen.charAt(i);
 
-            // For each square
-            for (int j = 0; j < squares.length; j++) {
-                // If the square is not empty
-                if (!squares[j].equals("")) {
-                    // Get the piece
-                    Piece piece = Piece.getPieceFromChar(squares[j].charAt(0));
+            // If the character is a letter, add a vueCase of the corresponding piece
+            if (Character.isLetter(c)) {
+                VuePiece vuePiece = new VuePiece(Piece.getPieceFromChar(c));
+                VueCase vueCase = new VueCase(x, y, (x + y) % 2 == 0 ? Color.WHITE : Color.GREY, vuePiece);
+                vueCase.setVuePiece(vuePiece, imageX, imageY);
+                add(vueCase, x, y);
+                x++;
+            }
 
-                    // If the piece is not null
-                    if (piece != null) {
-                        // Add the piece to the grid
-                        getVueCase(j, i).setVuePiece(new VuePiece(piece));
-                    }
-
-                    // If the square is empty
-                    else {
-                        // Get the number of empty squares
-                        int nbEmptySquares = Integer.parseInt(squares[j]);
-
-                        // Add the empty squares to the grid
-                        for (int k = 0; k < nbEmptySquares; k++) {
-                            getVueCase(j + k, i).setVuePiece(null);
-                        }
-
-                        // Skip the empty squares
-                        j += nbEmptySquares - 1;
-                    }
+            // If the character is a number, add a vueCase of the corresponding number of empty squares
+            else if (Character.isDigit(c)) {
+                for (int j = 0; j < Character.getNumericValue(c); j++) {
+                    VueCase vueCase = new VueCase(x, y, (x + y) % 2 == 0 ? Color.WHITE : Color.GREY, null);
+                    vueCase.setVuePiece(null, imageX, imageY);
+                    add(vueCase, x, y);
+                    x++;
                 }
+            }
+
+            // If the character is a slash, go to the next line
+            else if (c == '/') {
+                x = 0;
+                y++;
+            }
+
+            if(x ==8 && y == 7){
+                break;
             }
         }
     }
@@ -99,7 +102,15 @@ public class VuePlateau extends GridPane {
                 // If the square is empty
                 if (vuePiece == null) {
                     // Add an empty square to the FEN
-                    fen += "1";
+                    // If the previous square was empty, add 1 to the number of empty squares
+                    if (fen.length() > 0 && fen.charAt(fen.length() - 1) >= '0' && fen.charAt(fen.length() - 1) <= '9') {
+                        fen = fen.substring(0, fen.length() - 1) + (Integer.parseInt(fen.substring(fen.length() - 1)) + 1);
+                    }
+
+                    // If the previous square was not empty, add an empty square
+                    else {
+                        fen += "1";
+                    }
                 }
 
                 // If the square is not empty
